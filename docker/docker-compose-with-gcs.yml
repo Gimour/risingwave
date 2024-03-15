@@ -4,7 +4,7 @@ x-image: &image
   image: ${RW_IMAGE:-risingwavelabs/risingwave:v1.7.1}
 services:
   risingwave-standalone:
-    <<: *image
+    <<: *image configs:
     command: "standalone --meta-opts=\" \
                     --listen-addr 0.0.0.0:5690 \
                     --advertise-addr 0.0.0.0:5690 \
@@ -14,7 +14,7 @@ services:
                     --connector-rpc-endpoint 0.0.0.0:50051 \
                     --backend etcd \
                     --etcd-endpoints etcd-0:2388 \
-                    --state-store hummock+gcs://<bucket-name> \
+                    --state-store hummock+gcs://massive-oasis-412719 \
                     --data-directory hummock_001 \
                     --config-path /risingwave.toml\" \
                  --compute-opts=\" \
