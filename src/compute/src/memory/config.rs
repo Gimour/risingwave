@@ -170,15 +170,15 @@ pub fn storage_memory_config(
 
     StorageMemoryConfig {
         block_cache_capacity_mb,
+        block_shard_num,
         meta_cache_capacity_mb,
+        meta_shard_num,
         shared_buffer_capacity_mb,
         data_file_cache_ring_buffer_capacity_mb,
         meta_file_cache_ring_buffer_capacity_mb,
         compactor_memory_limit_mb,
         prefetch_buffer_capacity_mb,
         high_priority_ratio_in_percent,
-        block_shard_num,
-        meta_shard_num,
     }
 }
 
