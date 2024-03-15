@@ -1014,7 +1014,7 @@ impl HummockManager {
                 let is_trivial_reclaim = CompactStatus::is_trivial_reclaim(&compact_task);
                 let is_trivial_move = CompactStatus::is_trivial_move_task(&compact_task);
                 if is_trivial_reclaim || (is_trivial_move && can_trivial_move) {
-                    let log_tabel = if is_trivial_reclaim {
+                    let log_label = if is_trivial_reclaim {
                         "TrivialReclaim"
                     } else {
                         "TrivialMove"
@@ -1027,7 +1027,7 @@ impl HummockManager {
 
                     tracing::debug!(
                         "{} for compaction group {}: input: {:?}, cost time: {:?}",
-                        log_tabel,
+                        log_label,
                         compact_task.compaction_group_id,
                         compact_task.input_ssts,
                         start_time.elapsed()
@@ -1083,7 +1083,7 @@ impl HummockManager {
                         compact_task.table_schemas = match self.metadata_manager() {
                             MetadataManager::V1(mgr) => mgr
                                 .catalog_manager
-                                .get_versioned_table_schemas(&task.existing_table_ids)
+                                .get_versioned_table_schemas(&compact_task.existing_table_ids)
                                 .await
                                 .into_iter()
                                 .map(|(table_id, column_ids)| {
@@ -1094,7 +1094,7 @@ impl HummockManager {
                                 // TODO #13952: support V2
                                 BTreeMap::default()
                             }
-                        }
+                        };
                     }
 
                     compact_task_assignment.insert(
@@ -1214,6 +1214,7 @@ impl HummockManager {
 
         #[cfg(test)]
         {
+            drop(versioning_guard);
             drop(compaction_guard);
             self.check_state_consistency().await;
         }
